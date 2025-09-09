@@ -15,6 +15,7 @@ import Play from "../pages/Play";
 import Member from "../pages/Member";
 import MemberDetail from "../pages/MemberDetail";
 import MemberForm from "../pages/MemberForm";
+import MemberUpdateForm from "../pages/MemberUpdateForm";
 
 // 페이지 routing 정보를 배열에 미리 저장해 둔다.
 const routes=[
@@ -26,7 +27,8 @@ const routes=[
     {path:"/play", element:<Play/>},
     {path:"/members", element:<Member/>},
     {path:"/members/:num", element:<MemberDetail/>},
-    {path:"/members/new", element:<MemberForm/>}   
+    {path:"/members/new", element:<MemberForm/>},
+    {path:"/members/:num/edit", element:<MemberUpdateForm/>}   
 ];
 
 //export 해줄 router 객체를 만든다

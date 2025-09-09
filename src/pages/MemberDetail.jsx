@@ -1,10 +1,10 @@
 // src/pages/MemberDetail.jsx
 
 import { useEffect, useState } from "react";
-import { Alert } from "react-bootstrap";
-import { useParams, useSearchParams } from "react-router-dom";
+import { Alert, Button } from "react-bootstrap";
+import { NavLink, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Bread from "../components/Bread";
-
+import ConfirmModal from "../components/ComfirmModal";
 
 function MemberDetail() {
     //자세히 보여줄 회원의 번호를 읽어와서
@@ -20,6 +20,8 @@ function MemberDetail() {
 
     //API 서버에 해당 회원 한명의 정보를 받아와서 ui 에 출력한다 
     const [dto, setDto] = useState({});
+    //ConfirmModal 을 띄울지 여부를 상태값으로 관리한다.
+    const [showModal, setShowModal] = useState(false);
    
     useEffect(()=>{
         fetch(`/api/v1/members/${num}`)
@@ -31,6 +33,19 @@ function MemberDetail() {
         {name:"Members", to:"/members"},
         {name:"Detail"}
     ];
+
+    const navigate = useNavigate();
+
+    //삭제 확인을 눌렀을때 실행할 함수 
+    const handleYes = ()=>{
+        fetch(`/api/v1/members/${dto.num}`, {
+            method:"delete"
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            navigate("/members");
+        });
+    };
 
     return <>
         <Bread list={bread}/>
@@ -47,7 +62,12 @@ function MemberDetail() {
             "/members/1/edit"  => 수정 routing 경로 
 
         */}
-        
+        <Button variant="success" as={NavLink} to={`/members/${dto.num}/edit`}>수정</Button>
+        <Button variant="danger" className="ms-1" onClick={()=>setShowModal(true)}>삭제</Button>
+        <ConfirmModal show={showModal} 
+            message="삭제 하시겠습니까?" 
+            onCancel={()=>setShowModal(false)}
+            onYes={handleYes}/>
     </> 
 }
 

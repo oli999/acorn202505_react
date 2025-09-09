@@ -19,7 +19,7 @@ function Bread({list}) {
                     <NavLink to="/">Home</NavLink>
                 </li>
                 {list.map(item=>
-                    <li className={`breadcrumb-item ${item.to ? '':'active'}`}>
+                    <li key={item.name} className={`breadcrumb-item ${item.to ? '':'active'}`}>
                         {item.to ? <NavLink to={item.to}>{item.name}</NavLink> : item.name }
                     </li>
                 )}
