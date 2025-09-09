@@ -4,12 +4,12 @@ import { NavLink } from "react-router-dom";
 
 
 // react bootstrap 의 BreadCrumb ui 를 구성해주는 component
-function Location({list}) {
+function Bread({list}) {
     /*
-        Location({list}) 의 의미는
+        Bread({list}) 의 의미는
         props 로 전달되는 값 중에서 list 만 구조 분해 할당을 해서 담겠다는 의미
         
-        <Location list={["aaa","bbb","ccc"]} />  형식으로 사용한다면
+        <Bread list={["aaa","bbb","ccc"]} />  형식으로 사용한다면
         list 에는 ["aaa","bbb","ccc"] 이 배열이 들어 있다 
     */
     return <>
@@ -29,4 +29,4 @@ function Location({list}) {
     </>
 }
 
-export default Location;
+export default Bread;

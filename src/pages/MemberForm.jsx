@@ -1,7 +1,7 @@
 // src/pages/MemberForm.jsx
 
 import { useNavigate } from "react-router-dom";
-import Location from "../components/Location";
+import Bread from "../components/Bread";
 
 
 function MemberForm() {
@@ -41,7 +41,7 @@ function MemberForm() {
     ];
 
     return <>
-        <Location list={bread}/>
+        <Bread list={bread}/>
         <h1>회원 추가 양식</h1>
         <form action="/api/v1/members" method="post" onSubmit={handleSubmit}>
             <div>

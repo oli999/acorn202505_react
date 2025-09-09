@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { Alert } from "react-bootstrap";
 import { useParams, useSearchParams } from "react-router-dom";
-import Location from "../components/Location";
+import Bread from "../components/Bread";
+
 
 function MemberDetail() {
     //자세히 보여줄 회원의 번호를 읽어와서
@@ -32,7 +33,7 @@ function MemberDetail() {
     ];
 
     return <>
-        <Location list={bread}/>
+        <Bread list={bread}/>
         { params.get("message") && <Alert className="m-4" variant="success">저장했습니다</Alert>}
         <h1>회원 자세히 보기</h1>
         <p>번호 : <strong>{dto.num}</strong></p>
