@@ -1,6 +1,7 @@
 // src/components/LoginModal.jsx
 
 
+import axios from "axios";
 import api from "../api";
 import { useState } from "react";
 import { Alert, Button, FloatingLabel, Form, Modal } from "react-bootstrap";

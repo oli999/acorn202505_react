@@ -10,7 +10,7 @@ import router from './router'
 import { Provider } from 'react-redux'
 import { legacy_createStore as createStore } from 'redux';
 
-// resux store 에서 관리될 state 의 초기값
+// redux store 에서 관리될 state 의 초기값
 const initState={
   userInfo:null,
   loginModal:{

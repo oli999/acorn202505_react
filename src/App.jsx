@@ -3,6 +3,8 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import { useOutlet } from 'react-router-dom';
 import BsNavBar from './components/BsNavBar';
+import LoginModal from './components/LoginModal';
+
 
 function App() {
     //React Router v6  에서 제공하는 hook
@@ -14,6 +16,7 @@ function App() {
         <div className="container" style={{marginTop:"60px"}}>
            {currentOutlet}
         </div>
+        <LoginModal/>
     </>;
 }
 
