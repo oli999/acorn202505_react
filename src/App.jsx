@@ -11,7 +11,7 @@ function App() {
 
     return <>
         <BsNavBar/>
-        <div className="container" style={{marginTop:"60"}}>
+        <div className="container" style={{marginTop:"60px"}}>
            {currentOutlet}
         </div>
     </>;

@@ -1,6 +1,7 @@
 // src/components/LoginModal.jsx
 
-import api from '../api';
+
+import api from "../api";
 import { useState } from "react";
 import { Alert, Button, FloatingLabel, Form, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
