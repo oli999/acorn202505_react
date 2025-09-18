@@ -10,6 +10,8 @@ function BsNavBar() {
     const dispatch = useDispatch();
     //redux store 로 부터 상태값 가져오기 
     const userInfo=useSelector(state=>state.userInfo);
+    const logoutTimer=useSelector(state=>state.logoutTimer);
+
     // route 이동을 하기 위한 hook
     const navigate=useNavigate();
 
@@ -30,6 +32,10 @@ function BsNavBar() {
         dispatch({type:"USER_INFO", payload:null});
         // 인덱스로 이동
         navigate("/");
+        // 로그아웃 타이머 해제
+        clearTimeout(logoutTimer);
+        // store 에도 로그아웃 타이머 초기화
+        dispatch({type:"LOGOUT_TIMER", payload:null});
     };
 
     return <>

@@ -1,7 +1,7 @@
 // src/App.jsx
 
 import 'bootstrap/dist/css/bootstrap.css'
-import { useOutlet } from 'react-router-dom';
+import { useNavigate, useOutlet } from 'react-router-dom';
 import BsNavBar from './components/BsNavBar';
 import LoginModal from './components/LoginModal';
 import { useEffect } from 'react';
@@ -16,7 +16,7 @@ function App() {
     const currentOutlet=useOutlet();
 
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
     //컴포넌트가 활성화 되는 시점에 토큰을 읽어와 본다
     useEffect(()=>{
         const token=localStorage.token;
@@ -26,7 +26,26 @@ function App() {
             //콘솔에 출력해보기
             console.log("토큰 정보!!!");
             console.log(decoded);
-            
+            //token 만료시간을 얻어내서 ms 단위로 변경한다
+            const exp = decoded.exp*1000;
+            //현재 시간얻어내기 (ms)
+            const now = Date.now();
+            //남은 시간
+            const remainTime = exp-now;
+            //남은 시간이 경과하면 실행할 함수 등록
+            const logoutTimer = setTimeout(()=>{
+                //로그아웃 처리를 한다
+                delete localStorage.token;
+                dispatch({ type: 'USER_INFO', payload: null });
+                alert('토큰이 만료되어 자동 로그아웃 되었습니다.');
+                navigate("/");
+            }, remainTime);
+            // logoutTimer 아이디를 redux store 에 저장한다 
+            dispatch({
+                type:"LOGOUT_TIMER",
+                payload:logoutTimer
+            });
+
             api.get("/v1/ping")
             .then(res=>{
                 //여기가 실행되면 사용가능한 토큰

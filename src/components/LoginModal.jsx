@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Alert, Button, FloatingLabel, Form, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 function LoginModal() {
     
@@ -61,6 +62,28 @@ function LoginModal() {
             if(url){
                 navigate(url);
             }
+            const token=res.data;
+            // 앞의 7자리 문자열 "Bearer " 를 제외한 뒤의 문자열을 디코딩한다.
+            const decoded = jwtDecode(token.substring(7));
+            //token 만료시간을 얻어내서 ms 단위로 변경한다
+            const exp = decoded.exp*1000;
+            //현재 시간얻어내기 (ms)
+            const now = Date.now();
+            //남은 시간
+            const remainTime = exp-now;
+            //남은 시간이 경과하면 실행할 함수 등록
+            const logoutTimer = setTimeout(()=>{
+                //로그아웃 처리를 한다
+                delete localStorage.token;
+                dispatch({ type: 'USER_INFO', payload: null });
+                alert('토큰이 만료되어 자동 로그아웃 되었습니다.');
+                navigate("/");
+            }, remainTime);
+            // logoutTimer 아이디를 redux store 에 저장한다 
+            dispatch({
+                type:"LOGOUT_TIMER",
+                payload:logoutTimer
+            });
         }catch(err){
             // userName 과 password 가 틀리면 401  UNAUTHORIZED 에러 응답을 할 예정이다
             setErrorMsg(err.response.data);
