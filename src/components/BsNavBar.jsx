@@ -60,7 +60,9 @@ function BsNavBar() {
                     :
                         <>
                             <Button onClick={handleLogin} size="sm" variant="success">로그인</Button>
-                            <Button size="sm" variant="primary" className="ms-1">회원가입</Button>
+                            <Button onClick={()=>{
+                                navigate("/user/new")
+                            }} size="sm" variant="primary" className="ms-1">회원가입</Button>
                         </>
                     }
                 </Navbar.Collapse>
