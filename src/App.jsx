@@ -1,6 +1,8 @@
 // src/App.jsx
 
 import 'bootstrap/dist/css/bootstrap.css'
+// bootstrap icon 을 사용하기 위한 import
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import { useNavigate, useOutlet } from 'react-router-dom';
 import BsNavBar from './components/BsNavBar';
 import LoginModal from './components/LoginModal';
@@ -45,7 +47,7 @@ function App() {
                 type:"LOGOUT_TIMER",
                 payload:logoutTimer
             });
-
+            
             api.get("/v1/ping")
             .then(res=>{
                 //여기가 실행되면 사용가능한 토큰

@@ -52,7 +52,7 @@ function BsNavBar() {
                     { userInfo ?
                         <>
                             <Nav>
-                                <Nav.Link>{userInfo.userName}</Nav.Link>
+                                <Nav.Link as={NavLink} to="/user">{userInfo.userName}</Nav.Link>
                                 <span className="navbar-text">로그인중...</span>
                             </Nav>
                             <Button onClick={handleLogout} className="ms-1" size="sm" variant="outline-primary">로그아웃</Button>
