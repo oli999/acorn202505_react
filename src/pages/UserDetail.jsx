@@ -63,6 +63,7 @@ function UserDetail() {
                 </tr>
             </tbody>        
         </table>
+        <NavLink to="/user/edit">가입정보 수정</NavLink>
     </>
 }
 

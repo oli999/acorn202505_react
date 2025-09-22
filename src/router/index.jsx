@@ -14,6 +14,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import UserDetail from "../pages/UserDetail";
 import UserPwdUpdateForm from "../pages/UserPwdUpdateForm";
 import UserForm from "../pages/UserForm";
+import UserUpdateForm from "../pages/UserUpdateForm";
 
 // 페이지 routing 정보를 배열에 미리 저장해 둔다.
 const routes=[
@@ -23,7 +24,8 @@ const routes=[
     {path:"/", element:<Home/>},
     {path:"/user", element:<ProtectedRoute><UserDetail/></ProtectedRoute>},
     {path:"/user/pwd-edit", element:<ProtectedRoute><UserPwdUpdateForm/></ProtectedRoute>},
-    {path:"/user/new", element:<UserForm/>}   
+    {path:"/user/new", element:<UserForm/>},
+    {path:"/user/edit", element:<ProtectedRoute><UserUpdateForm/></ProtectedRoute>}   
 ];
 
 //export 해줄 router 객체를 만든다

@@ -64,6 +64,8 @@ function UserForm() {
         setErrorMsg(null);
         //console.log(e.target.action);
         try{
+            // 이미 가입된 아이디라면 여기서 예외가 발생한다. (catch 블럭이 실행됨)
+            // axios 는 200 번대 응답이 아니면 무조건 예외를 발생시킨다 
             await api.post("/v1/user", state);
             //로그인창을 띄워준다.
             dispatch({
@@ -72,6 +74,7 @@ function UserForm() {
             });
         }catch(err){
             console.log(err);
+            //에러 state 에 에러 메세지를 넣어준다 
             setErrorMsg(err.response.data);
         }
     };
