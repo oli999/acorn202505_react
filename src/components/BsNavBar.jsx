@@ -46,7 +46,7 @@ function BsNavBar() {
                 <Navbar.Collapse id="collapse">
                     <Nav className="me-auto">
                         <Nav.Link as={NavLink} to="/">Home</Nav.Link>
-                        <Nav.Link as={NavLink} to="/posts">Post</Nav.Link>
+                        <Nav.Link as={NavLink} to="/board">Board</Nav.Link>
                         <Nav.Link as={NavLink} to="/gallery">Gallery</Nav.Link>
                     </Nav>
                     { userInfo ?
