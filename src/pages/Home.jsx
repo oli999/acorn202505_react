@@ -2,6 +2,7 @@
 
 import api from "../api";
 import { useEffect, useState } from "react";
+import ToastEditor from "../components/ToastEditor";
 
 function Home() {
     
@@ -13,7 +14,6 @@ function Home() {
         .then(res=>setNoticeList(res.data))
         .catch(err=>console.log(err));
     }, []);
-
     return (
         <>
             <h1>인덱스 페이지 입니다</h1>
