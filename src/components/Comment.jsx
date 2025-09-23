@@ -68,38 +68,38 @@ function Comment({category, parentNum, parentWriter, list}) {
                                 <small className="text-muted">{item.createdAt}</small>
                             </div>
                         </div>
+                        <pre>{item.content}</pre>
+                        { item.writer === userInfo.userName &&  
+                        <>
+                            <button className="btn btn-sm btn-outline-secondary edit-btn">수정</button>
+                            <div className="d-none form-div">
+                                <form action="" method="post">
+                                    <input type="hidden" name="num" value={item.num}/>
+                                    <input type="hidden" name="parentNum" value={parentNum}/>
+                                    <textarea name="content" className="form-control mb-2" rows="2" >{item.content}</textarea>
+                                    <button type="submit" className="btn btn-sm btn-success">수정 완료</button>
+                                    <button type="reset" className="btn btn-sm btn-secondary cancel-edit-btn">취소</button>
+                                </form>
+                            </div>
+                        </>
+                        } 
+                        { item.writer !== userInfo.userName &&
+                        <>
+                            <button className="btn btn-sm btn-outline-primary show-reply-btn">댓글</button>  
+                            <div className="d-none form-div">
+                                <form action="" method="post">
+                                    <input type="hidden" name="parentNum" value={parentNum}/>
+                                    <input type="hidden" name="targetWriter" value={item.writer}/>
+                                    <input type="hidden" name="groupNum" value={item.groupNum}/>
+                                    <textarea name="content" className="form-control mb-2" rows="2" 
+                                        placeholder="댓글을 입력하세요..."></textarea>
+                                    <button type="submit" className="btn btn-sm btn-success">등록</button>
+                                    <button type="reset" className="btn btn-sm btn-secondary cancel-reply-btn">취소</button>
+                                </form>
+                            </div>                     
+                        </>
+                        } 
                     </div>
-                    <pre>{item.content}</pre>
-                    { item.writer === userInfo.userName &&  
-                    <>
-                        <button className="btn btn-sm btn-outline-secondary edit-btn">수정</button>
-                        <div className="d-none form-div">
-                            <form action="" method="post">
-                                <input type="hidden" name="num" value={item.num}/>
-                                <input type="hidden" name="parentNum" value={parentNum}/>
-                                <textarea name="content" className="form-control mb-2" rows="2" >{item.content}</textarea>
-                                <button type="submit" className="btn btn-sm btn-success">수정 완료</button>
-                                <button type="reset" className="btn btn-sm btn-secondary cancel-edit-btn">취소</button>
-                            </form>
-                        </div>
-                    </>
-                    } 
-                    { item.writer !== userInfo.userName &&
-                    <>
-                        <button className="btn btn-sm btn-outline-primary show-reply-btn">댓글</button>  
-                        <div className="d-none form-div">
-                            <form action="" method="post">
-                                <input type="hidden" name="parentNum" value={parentNum}/>
-                                <input type="hidden" name="targetWriter" value={item.writer}/>
-                                <input type="hidden" name="groupNum" value={item.groupNum}/>
-                                <textarea name="content" className="form-control mb-2" rows="2" 
-                                    placeholder="댓글을 입력하세요..."></textarea>
-                                <button type="submit" className="btn btn-sm btn-success">등록</button>
-                                <button type="reset" className="btn btn-sm btn-secondary cancel-reply-btn">취소</button>
-                            </form>
-                        </div>                     
-                    </>
-                    } 
                 </div>
             }
             </div>
