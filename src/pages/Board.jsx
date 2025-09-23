@@ -103,6 +103,15 @@ function Board() {
         navigate("/board");
     };
 
+    // 검색 쿼리가 있다면 해당 문자열을 리턴해주는 함수(없으면 빈 문자열을 리턴한다)
+    const getQuery = ()=>{
+        let query="";
+        if(pageInfo.keyword){
+            query=`?search=${pageInfo.search}&keyword=${pageInfo.keyword}`;
+        }
+        return query;
+    };
+
     return <>
         <NavLink to="/board/new">새글 작성</NavLink>
         
@@ -150,7 +159,9 @@ function Board() {
                 <tr key={item.num}>
                     <td>{item.num}</td>
                     <td>{item.writer}</td>
-                    <td>{item.title}</td>
+                    <td>
+                        <NavLink to={`/board/${item.num}${getQuery()}`}>{item.title}</NavLink>
+                    </td>
                     <td>{item.viewCount}</td>
                     <td>{item.createdAt}</td>
                 </tr>
