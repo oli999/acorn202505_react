@@ -105,7 +105,10 @@ function BoardDetail() {
 		    
 		  </div>
 		</div>
-        <Comment category="board" parentNum={dto.num} parentWriter={dto.writer} list={commentList}/>              
+        <Comment category="board" 
+            parentNum={dto.num} 
+            parentWriter={dto.writer} 
+            list={commentList}/>              
     </>
 }
 

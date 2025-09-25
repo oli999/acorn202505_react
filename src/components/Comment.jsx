@@ -11,6 +11,35 @@ function Comment({category, parentNum, parentWriter, list}) {
     // 만일 로그인을 하지 않았으면 null 이기 때문에 빈 object 를 넣어준다.
     if(!userInfo)userInfo={};
     
+    //대댓글 보기 버튼을 눌렀을때 실행할 함수 
+    const handleReplyCountBtn = (e)=>{
+        //click 이벤트가 발생한 버튼의 참조값
+        const item=e.target;
+        //click 이벤트가 발생한 그 버튼의 자손요소 중에서 caret up 또는 caret down 요소를 찾는다
+        const caret = item.querySelector(".bi-caret-up, .bi-caret-down");
+        // caret 모양을 위 아래로 토글 시킨다 	
+        caret.classList.toggle("bi-caret-down");
+        caret.classList.toggle("bi-caret-up");
+        
+        // 1. 버튼(item)의 두 단계 부모 요소로 이동
+        const grandParent = item.parentElement.parentElement;
+        // 2. 두단계 부모요소의 바로 다음 형제 요소의 참조값을 얻어낸다 
+        let next = grandParent.nextElementSibling;
+        // 3. 반복문 돌면서 (다음 형제 요소가 있는 동안에 반복문 돌기)
+        while (next) {
+            //만일 re-re 클래스가 존재한다면 
+            if (next.classList.contains("re-re")) {
+                // d-none 클래스를 토글시켜서 보였다 숨겼다를 반복 시킨다
+                next.classList.toggle("d-none");
+            }else{//존재하지 않으면 
+                //반복문 탈출 
+                break;
+            }
+            //다음 형제 요소의 참조값 얻어내기  
+            next = next.nextElementSibling;
+        }
+    };
+    
     return <>
     	<div className="card my-3">
 		  <div className="card-header bg-primary text-white">
@@ -38,7 +67,7 @@ function Comment({category, parentNum, parentWriter, list}) {
             { item.deleted !== 'yes' &&
                 <div className="card-body d-flex flex-column flex-sm-row position-relative">
                 { item.replyCount !== 0 && item.num === item.groupNum && 
-                    <button className="dropdown-btn btn btn-outline-secondary btn-sm position-absolute"
+                    <button onClick={handleReplyCountBtn} className="dropdown-btn btn btn-outline-secondary btn-sm position-absolute"
                         style={{bottom:"16px", right:"16px"}}>
                         <i className="bi bi-caret-down"></i>
                         답글 {item.replyCount} 개
@@ -46,7 +75,7 @@ function Comment({category, parentNum, parentWriter, list}) {
                 }
                 { item.num !== item.groupNum &&
                     <i className="bi bi-arrow-return-right position-absolute" 
-                        style={{top:0, right:"-30px"}}></i>       
+                        style={{top:0, left:"-30px"}}></i>       
                 }
                 { item.writer === userInfo.userName && 
                     <button data-num={item.num} 

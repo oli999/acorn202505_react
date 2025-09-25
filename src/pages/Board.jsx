@@ -1,6 +1,6 @@
 // src/pages/Board.jsx
 
-import { useEffect, usepageInfo, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../api";
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { Pagination } from "react-bootstrap";
