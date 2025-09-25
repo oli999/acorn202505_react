@@ -3,8 +3,9 @@
 //클래스를 쉽게 제어하기 위한 유틸리티
 import cn from 'classnames';
 import { useSelector } from 'react-redux';
+import api from '../api'
 
-function Comment({category, parentNum, parentWriter, list}) {
+function Comment({category, parentNum, parentWriter, list, onRefresh}) {
 
     // redux store 로 부터 로그인 정보를 얻어낸다 
     let userInfo = useSelector(state=>state.userInfo);
@@ -39,21 +40,41 @@ function Comment({category, parentNum, parentWriter, list}) {
             next = next.nextElementSibling;
         }
     };
-    
+
+    //댓글 등록 버튼을 눌렀을때 실행할 함수 
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+
+        const form=e.target; //submit 이벤트가 발행한 form 의 참조값
+        //폼에 입력한 내용을 FormData 객체로 얻어내서 
+        const formData=new FormData(form);
+        //Object 로 변환
+        const obj = Object.fromEntries(formData);
+        try{
+            await api.post("/v1/comments", obj);
+            //댓글 목록을 refresh 한다
+            onRefresh();
+        }catch(err){
+            console.log(err);
+        }
+    }
+
     return <>
     	<div className="card my-3">
 		  <div className="card-header bg-primary text-white">
 		    댓글을 입력해 주세요
 		  </div>
 		  <div className="card-body">
-		    <form action="/v1/comments" method="post">
+		    <form onSubmit={handleSubmit} action="/v1/comments" method="post">
 		      <input type="hidden" name="parentNum" value={parentNum} />
 		      <input type="hidden" name="targetWriter" value={parentWriter} />
 		      <div className="mb-3">
 		        <label htmlFor="commentContent" className="form-label">댓글 내용</label>
-		        <textarea id="commentContent" name="content" rows="5" className="form-control" placeholder="댓글을 입력하세요"></textarea>
+		        <textarea id="commentContent" name="content" rows="5" className="form-control" 
+                    placeholder={userInfo.userName ? '댓글을 입력하세요' : '댓글 작성을 위해 로그인이 필요합니다'}
+                    disabled={userInfo.userName ? false : true}></textarea>
 		      </div>
-		      <button type="submit" className="btn btn-success">등록</button>
+		      <button disabled={userInfo.userName ? false : true} type="submit" className="btn btn-success">등록</button>
 		    </form>
 		  </div>
 		</div>
@@ -105,7 +126,7 @@ function Comment({category, parentNum, parentWriter, list}) {
                                 <form action="" method="post">
                                     <input type="hidden" name="num" value={item.num}/>
                                     <input type="hidden" name="parentNum" value={parentNum}/>
-                                    <textarea name="content" className="form-control mb-2" rows="2" >{item.content}</textarea>
+                                    <textarea name="content" className="form-control mb-2" rows="2" defaultValue={item.content}></textarea>
                                     <button type="submit" className="btn btn-sm btn-success">수정 완료</button>
                                     <button type="reset" className="btn btn-sm btn-secondary cancel-edit-btn">취소</button>
                                 </form>
@@ -116,14 +137,15 @@ function Comment({category, parentNum, parentWriter, list}) {
                         <>
                             <button className="btn btn-sm btn-outline-primary show-reply-btn">댓글</button>  
                             <div className="d-none form-div">
-                                <form action="" method="post">
+                                <form onSubmit={handleSubmit} action="/v1/comments" method="post">
                                     <input type="hidden" name="parentNum" value={parentNum}/>
                                     <input type="hidden" name="targetWriter" value={item.writer}/>
                                     <input type="hidden" name="groupNum" value={item.groupNum}/>
                                     <textarea name="content" className="form-control mb-2" rows="2" 
-                                        placeholder="댓글을 입력하세요..."></textarea>
-                                    <button type="submit" className="btn btn-sm btn-success">등록</button>
-                                    <button type="reset" className="btn btn-sm btn-secondary cancel-reply-btn">취소</button>
+                                        placeholder={userInfo.userName ? '댓글을 입력하세요' : '댓글 작성을 위해 로그인이 필요합니다'}
+                                        disabled={userInfo.userName ? false : true}></textarea>
+                                    <button disabled={userInfo.userName ? false : true} type="submit" className="btn btn-sm btn-success">등록</button>
+                                    <button disabled={userInfo.userName ? false : true} type="reset" className="btn btn-sm btn-secondary cancel-reply-btn">취소</button>
                                 </form>
                             </div>                     
                         </>

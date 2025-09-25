@@ -36,6 +36,14 @@ function BoardDetail() {
     const handleMove = (targetNum)=>{
         navigate(`/board/${targetNum}${params.get("search") ? "?"+params.toString() : ""}`);
     };
+
+    //댓글 refresh 이벤트가 발생했을때 실행할 함수
+    const handleRefresh=()=>{
+        //댓글 목록을 다시 받아온다 
+        api.get(`/v1/board/${num}/comments`)
+        .then(res=>setCommentList(res.data))
+        .catch(err=>console.log(err));
+    };
    
     return <>
         <h1>게시글 상세보기</h1>
@@ -108,7 +116,8 @@ function BoardDetail() {
         <Comment category="board" 
             parentNum={dto.num} 
             parentWriter={dto.writer} 
-            list={commentList}/>              
+            list={commentList}
+            onRefresh={handleRefresh}/>              
     </>
 }
 
