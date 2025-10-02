@@ -14,7 +14,20 @@ function BoardDetail() {
     //글 하나의 정보를 상태값으로 관리
     const [dto, setDto] = useState({});
     //댓글 목록도 상태값으로 관리한다.
-    const [commentList, setCommentList] = useState([]);
+    const [commentListResponse, setCommentListResponse] = useState({
+        list:[],
+        startPageNum:0,
+        endPageNum:0,
+        totalPageCount:0,
+        pageNum:0
+    });
+    //댓글 목록을 얻어오는 함수 (pageNum 의 default 값은 1)
+    const getComments = (pageNum=1)=>{
+        //댓글 목록
+        api.get(`/v1/board/${num}/comments?pageNum=${pageNum}`)
+        .then(res=>setCommentListResponse(res.data))
+        .catch(err=>console.log(err));
+    }
 
     useEffect(()=>{
         // params.toString() 하면 query 문자열이 리턴된다. 없으면 빈 문자열이 리턴된다.
@@ -23,12 +36,7 @@ function BoardDetail() {
             setDto(res.data);
         })
         .catch(err=>console.log(err));
-
-        //댓글 목록
-        api.get(`/v1/board/${num}/comments`)
-        .then(res=>setCommentList(res.data))
-        .catch(err=>console.log(err));
-
+        getComments();
     }, [num]); // 자세히 보여줄 댓글 번호가 변경되면 다시 로딩 되도록 
 
     const navigate = useNavigate();
@@ -39,10 +47,11 @@ function BoardDetail() {
 
     //댓글 refresh 이벤트가 발생했을때 실행할 함수
     const handleRefresh=()=>{
-        //댓글 목록을 다시 받아온다 
-        api.get(`/v1/board/${num}/comments`)
-        .then(res=>setCommentList(res.data))
-        .catch(err=>console.log(err));
+        getComments();
+    };
+    //Comment 컴포넌트에 전달할 함수 
+    const commentPageMove = (pageNum)=>{
+        getComments(pageNum);
     };
    
     return <>
@@ -116,8 +125,9 @@ function BoardDetail() {
         <Comment category="board" 
             parentNum={dto.num} 
             parentWriter={dto.writer} 
-            list={commentList}
-            onRefresh={handleRefresh}/>              
+            commentListResponse={commentListResponse}
+            onRefresh={handleRefresh}
+            onMove={commentPageMove}/>              
     </>
 }
 

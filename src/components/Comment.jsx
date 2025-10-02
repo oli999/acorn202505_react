@@ -5,8 +5,21 @@ import cn from 'classnames';
 import { useSelector } from 'react-redux';
 import api from '../api'
 import { useState } from 'react';
+import PaginationBar from './PaginationBar';
 
-function Comment({category, parentNum, parentWriter, list, onRefresh}) {
+/*
+    Comment 의 props 로 전달되는 commentListResponse 는 아래의 구조이다
+    {
+        list: 댓글목록[],
+        pageNum: 현재 페이지,
+        startPageNum: 시작 페이지 번호,
+        endPageNum: 끝 페이지 번호,
+        totalPageCount: 전체 페이지 갯수
+    }
+    onMove 는 아래의 구조이다 (이동할 댓글의 pageNum 을 전달 받는 함수)
+    (num)=>{ }
+*/
+function Comment({category, parentNum, parentWriter, commentListResponse, onRefresh, onMove}) {
 
     // redux store 로 부터 로그인 정보를 얻어낸다 
     let userInfo = useSelector(state=>state.userInfo);
@@ -139,7 +152,7 @@ function Comment({category, parentNum, parentWriter, list, onRefresh}) {
 		</div>
 
         <div className="comments">
-        {list.map(item=>{
+        {commentListResponse.list.map(item=>{
             //대댓글인지 여부 
             const isReRe = item.num !== item.groupNum;
             //대댓글이 open 되어 있는지 여부
@@ -224,6 +237,7 @@ function Comment({category, parentNum, parentWriter, list, onRefresh}) {
             </div>
         })}
         </div>
+        <PaginationBar pageState={{...commentListResponse, list:undefined}} onMove={onMove}/>
     </>
 }
 
