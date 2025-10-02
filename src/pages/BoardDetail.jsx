@@ -12,7 +12,9 @@ function BoardDetail() {
     const [params] = useSearchParams();
 
     //글 하나의 정보를 상태값으로 관리
-    const [dto, setDto] = useState({});
+    const [dto, setDto] = useState({
+        writer:"" //자식 컴포넌트에 전달하는 값인데 undefiend 면 경고 표시가 출력됨으로 default 값 설정
+    });
 
     useEffect(()=>{
         // params.toString() 하면 query 문자열이 리턴된다. 없으면 빈 문자열이 리턴된다.
@@ -63,33 +65,35 @@ function BoardDetail() {
 				<col className="col-2"/>
 				<col className="col"/>
 			</colgroup>
-			<tr>
-				<th>글번호</th>
-				<td>{dto.num}</td>
-			</tr>
-			<tr>
-				<th>작성자</th>
-				<td>
-					{ !dto.profileImage && <i style={{fontSize:"100px"}} className="bi bi-person-circle"></i> }
-					
-                    { dto.profileImage && 
-                        <img src={`/upload/${dto.profileImage}`} 
-							style={{width:"100px", height:"100px", borderRadius:"50%"}}/> 
-                    }
-				</td>
-			</tr>
-			<tr>
-				<th>제목</th>
-				<td>{dto.title}</td>
-			</tr>
-			<tr>
-				<th>조회수</th>
-				<td>{dto.viewCount}</td>
-			</tr>
-			<tr>
-				<th>작성일</th>
-				<td>{dto.createdAt}</td>
-			</tr>
+            <tbody>
+                <tr>
+                    <th>글번호</th>
+                    <td>{dto.num}</td>
+                </tr>
+                <tr>
+                    <th>작성자</th>
+                    <td>
+                        { !dto.profileImage && <i style={{fontSize:"100px"}} className="bi bi-person-circle"></i> }
+                        
+                        { dto.profileImage && 
+                            <img src={`/upload/${dto.profileImage}`} 
+                                style={{width:"100px", height:"100px", borderRadius:"50%"}}/> 
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>제목</th>
+                    <td>{dto.title}</td>
+                </tr>
+                <tr>
+                    <th>조회수</th>
+                    <td>{dto.viewCount}</td>
+                </tr>
+                <tr>
+                    <th>작성일</th>
+                    <td>{dto.createdAt}</td>
+                </tr>
+            </tbody>
 		</table>
 		<div className="card mt-4">
 		  <div className="card-header bg-light">
