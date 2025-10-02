@@ -7,18 +7,6 @@ import api from '../api'
 import { useEffect, useState } from 'react';
 import PaginationBar from './PaginationBar';
 
-/*
-    Comment 의 props 로 전달되는 commentListResponse 는 아래의 구조이다
-    {
-        list: 댓글목록[],
-        pageNum: 현재 페이지,
-        startPageNum: 시작 페이지 번호,
-        endPageNum: 끝 페이지 번호,
-        totalPageCount: 전체 페이지 갯수
-    }
-    onMove 는 아래의 구조이다 (이동할 댓글의 pageNum 을 전달 받는 함수)
-    (num)=>{ }
-*/
 function Comment({category, parentNum, parentWriter}) {
     
     //댓글 목록도 상태값으로 관리한다.
