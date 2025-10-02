@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import api from "../api";
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { Pagination } from "react-bootstrap";
+import PaginationBar from "../components/PaginationBar";
 
 function Board() {
     // "/board?pageNum=x" 에서 pageNum 을 추출하기 위해 
@@ -44,17 +45,6 @@ function Board() {
         });
     }, [params]);
 
-    //페이징 UI 를 만들때 사용할 배열을 리턴해주는 함수 
-    function range(start, end) {
-        const result = [];
-        for (let i = start; i <= end; i++) {
-            result.push(i);
-        }
-        return result;
-    }
-
-    //페이지 번호를 출력할때 사용하는 숫자를 배열에 미리 준비한다 
-    const pageArray = range(pageInfo.startPageNum, pageInfo.endPageNum);
     //이동을 하기위한 hook
     const navigate = useNavigate();
 
@@ -168,31 +158,7 @@ function Board() {
             )}
 			</tbody>
 		</table>
-        <Pagination>
-            <Pagination.Item 
-                onClick={()=>pageMove(pageInfo.startPageNum-1)}
-                disabled={pageInfo.startPageNum===1}
-            >
-                Prev
-            </Pagination.Item>
-            {
-                pageArray.map(num => 
-                    <Pagination.Item 
-                        onClick={()=>pageMove(num)}
-                        active={pageInfo.pageNum === num}
-                        key={num}
-                    >
-                        {num}
-                    </Pagination.Item>
-                )
-            }    
-            <Pagination.Item
-                onClick={()=>pageMove(pageInfo.endPageNum+1)}
-                disabled={pageInfo.endPageNum === pageInfo.totalPageCount}
-            >
-                Next
-            </Pagination.Item>
-        </Pagination>
+        <PaginationBar pageState={{...pageInfo, list:undefined}} onMove={pageMove}/>            
     </>
 }
 
