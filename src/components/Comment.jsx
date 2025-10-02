@@ -4,7 +4,7 @@
 import cn from 'classnames';
 import { useSelector } from 'react-redux';
 import api from '../api'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PaginationBar from './PaginationBar';
 
 /*
@@ -19,7 +19,37 @@ import PaginationBar from './PaginationBar';
     onMove 는 아래의 구조이다 (이동할 댓글의 pageNum 을 전달 받는 함수)
     (num)=>{ }
 */
-function Comment({category, parentNum, parentWriter, commentListResponse, onRefresh, onMove}) {
+function Comment({category, parentNum, parentWriter}) {
+    
+    //댓글 목록도 상태값으로 관리한다.
+    const [commentListResponse, setCommentListResponse] = useState({
+        list:[],
+        startPageNum:0,
+        endPageNum:0,
+        totalPageCount:0,
+        pageNum:0
+    });
+
+    //댓글 목록을 얻어오는 함수
+    const getComments = async (pageNum=1)=>{
+        try{
+            const res = await api.get(`/v1/${category}/${parentNum}/comments?pageNum=${pageNum}`);
+            setCommentListResponse(res.data);
+        }catch(err){
+            console.log(err);
+        }
+    };
+
+    useEffect(()=>{
+        //처음에는 댓글 1페이지의 내용을 받아오도록 한다 
+        getComments(1); 
+    }, []);
+
+    // PaginationBar 컴포넌트에 전달할 callback 함수
+    const handleMove = (num)=>{
+        //매개변수에 전달된 가져올 댓글 페이지 번호를 이용해서 댓글 목록을 다시 가져온다.
+        getComments(num);
+    };
 
     // redux store 로 부터 로그인 정보를 얻어낸다 
     let userInfo = useSelector(state=>state.userInfo);
@@ -80,7 +110,7 @@ function Comment({category, parentNum, parentWriter, commentListResponse, onRefr
         try{
             await api.post("/v1/comments", obj);
             //댓글 목록을 refresh 한다
-            onRefresh();
+            getComments(commentListResponse.pageNum);
             //만일 대댓글 폼이라면 접어야 한다
             if(obj.groupNum){
                 //submit 이벤트가 일어난 form 요소의 data-num="x"  x 값을 읽어오기 
@@ -102,7 +132,7 @@ function Comment({category, parentNum, parentWriter, commentListResponse, onRefr
         try{
             if(isDelete){
                 await api.delete(`/v1/comments/${num}`);
-                onRefresh();
+                getComments(commentListResponse.pageNum);
             }
         }catch(err){
             console.log(err);
@@ -121,7 +151,7 @@ function Comment({category, parentNum, parentWriter, commentListResponse, onRefr
         try{
             await api.patch(`/v1/comments/${obj.num}`, obj);
             //댓글 목록을 refresh 한다
-            onRefresh();
+            getComments(commentListResponse.pageNum);
             //댓글 수정 form 접기
             const set = new Set(openUpdateFormGroups);
             // obj.num 은 string type 이기 때문에 숫자로 변경해서 함수에 전달한다.
@@ -237,7 +267,7 @@ function Comment({category, parentNum, parentWriter, commentListResponse, onRefr
             </div>
         })}
         </div>
-        <PaginationBar pageState={{...commentListResponse, list:undefined}} onMove={onMove}/>
+        <PaginationBar pageState={{...commentListResponse, list:undefined}} onMove={handleMove}/>
     </>
 }
 
